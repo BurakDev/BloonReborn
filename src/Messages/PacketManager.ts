@@ -1,24 +1,65 @@
+import Emulator from '../Emulator';
+import Logging from '../Core/Logging';
 import ClientMessage from './ClientMessage';
 import GameClient from '../Networking/GameClient';
+import Incoming from './Incoming/Incoming';
+import Outgoing from './Outgoing/Outgoing';
+import InitCryptoEvent from './Incoming/Handshake/InitCryptoEvent';
+import B64 from '../Protocol/B64';
 
 export default class PacketManager {
     private incoming: Array<any>;
+    private outgoingNames: Array<string>;
+
+    public constructor() {
+        this.incoming = new Array<any>();
+        this.outgoingNames = new Array<string>();
+        let keys: Array<string> = Object.keys(Outgoing);
+
+        for (let i = 0; i < keys.length; i++) {
+            let key: string = keys[i];
+            let value: number = Outgoing[key];
+            this.outgoingNames[value] = key;
+        }
+
+        this.registerHandshake();
+    }
+
+    public getOutgoingName(header: number): string {
+        return this.outgoingNames[header] ? this.outgoingNames[header] : "NotFoundComposer";
+    }
 
     public handlePacket(client: GameClient, packet: ClientMessage): void {
         if (client == null)
             return;
 
-        console.log(packet.getHeader());
+        try {
+            if (this.isRegistered(packet.getHeader())) {
+                let handler = new this.incoming[packet.getHeader()]();
 
-        switch (packet.getHeader()) {
-            case 206:
-                client.write(new Buffer('DARAHIIIKHJIPAIQAdd-MM-yyyy' + String.fromCharCode(2) + String.fromCharCode(1), 'utf8'));
-                client.write(new Buffer('@H[100,105,110,115,120,125,130,135,140,145,150,155,160,165,170,175,176,177,178,180,185,190,195,200,205,206,207,210,215,220,225,230,235,240,245,250,255,260,265,266,267,270,275,280,281,285,290,295,300,305,500,505,510,515,520,525,530,535,540,545,550,555,565,570,575,580,585,590,595,596,600,605,610,615,620,625,626,627,630,635,640,645,650,655,660,665,667,669,670,675,680,685,690,695,696,700,705,710,715,720,725,730,735,740]' + String.fromCharCode(1), 'utf8'));
-                break;
-            case 4:
-                console.log(packet.readString());
-                console.log(packet.readString());
-                break;
+                Emulator.getLogging().logPacketLine("[" + Logging.ANSI_CYAN + "CLIENT" + Logging.ANSI_RESET + "][" + handler.constructor.name + "] => " + packet.getMessageBody());
+
+                handler.client = client;
+                handler.packet = packet;
+
+                handler.handle();
+            } else {
+                Emulator.getLogging().logPacketLine("[" + Logging.ANSI_CYAN + "CLIENT" + Logging.ANSI_RESET + "][" + Logging.ANSI_RED + "UNDEFINED" + Logging.ANSI_RESET + "][" + packet.getHeader() + "/" + B64.encode(packet.getHeader()) + "] => " + packet.getMessageBody());
+            }
+        } catch (e) {
+            console.error(e);
         }
+    }
+
+    public isRegistered(header: number): boolean {
+        return header in this.incoming;
+    }
+
+    public registerHandler(header: number, handler: any): void {
+        this.incoming[header] = handler;
+    }
+
+    public registerHandshake(): void {
+        this.registerHandler(Incoming.InitCryptoEvent, InitCryptoEvent);
     }
 }

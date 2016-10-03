@@ -35,4 +35,8 @@ export default class ClientMessage {
     public getHeader(): number {
         return this.header;
     }
+
+    public getMessageBody(): string {
+        return this.buffer;
+    }
 }

@@ -3,6 +3,7 @@ import Emulator from '../Emulator';
 import B64 from '../Protocol/B64';
 import PacketManager from '../Messages/PacketManager';
 import ClientMessage from '../Messages/ClientMessage';
+import GameClient from './GameClient';
 
 export default class GameServer {
     private host: string;
@@ -21,7 +22,11 @@ export default class GameServer {
         this.server.on('connection', this.handleConnection);
     }
 
-    public handleConnection(c: net.Socket): void {
+    public handleConnection(c: GameClient): void {
+        let x: GameClient = new GameClient();
+        c.sendResponse = x.sendResponse;
+        c.sendResponses = x.sendResponses;
+
         c.write(new Buffer('@@' + String.fromCharCode(1), 'utf8'));
 
         c.on('data', function(buffer: Buffer) {
