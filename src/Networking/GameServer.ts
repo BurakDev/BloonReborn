@@ -37,9 +37,9 @@ export default class GameServer {
 
                 let length: number = B64.decode(buff.substring(1, 3)) + 3;
 
-                let packet: string = buff.substring(3, length - 3);
+                let packet: string = buff.substring(3, length);
 
-                Emulator.getGameServer().getPacketManager().handlePacket(c, new ClientMessage(B64.decode(packet), packet));
+                Emulator.getGameServer().getPacketManager().handlePacket(c, new ClientMessage(B64.decode(packet.substring(0, 2)), packet.substring(2)));
 
                 buff = buff.substring(length);
             }

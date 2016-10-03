@@ -17,6 +17,21 @@ export default class ClientMessage {
         return decode;
     }
 
+    public readB64(): number {
+        let decode: number = B64.decode(this.buffer.substring(0, 2));
+        this.buffer = this.buffer.substring(2);
+
+        return decode;
+    }
+
+    public readString(): string {
+        let length: number = this.readB64();
+        let result: string = this.buffer.substring(0, length);
+        this.buffer = this.buffer.substring(length);
+
+        return result;
+    }
+
     public getHeader(): number {
         return this.header;
     }
