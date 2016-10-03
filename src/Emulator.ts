@@ -12,6 +12,10 @@ export default class Emulator {
         Emulator.gameServer.initialise();
         Emulator.gameServer.connect();
     }
+
+    public static getGameServer(): GameServer {
+        return this.gameServer;
+    }
 }
 
 Emulator.main();
