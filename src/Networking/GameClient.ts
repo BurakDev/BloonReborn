@@ -26,4 +26,8 @@ export default class GameClient extends net.Socket {
             this.sendResponse(responses[i]);
         }
     }
+
+    public dispose(): void {
+
+    }
 }
