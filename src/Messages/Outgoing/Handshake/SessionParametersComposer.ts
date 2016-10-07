@@ -9,7 +9,19 @@ export default class SessionParametersComposer extends MessageComposer {
     }
     public compose(): ServerMessage {
         this.response.init(Outgoing.SessionParametersComposer);
-        this.response.appendRawString("RAHIIIKHJIPAIQAdd-MM-yyyy");
+        this.response.appendVL64(6);
+        this.response.appendVL64(0);
+        this.response.appendVL64(1);
+        this.response.appendVL64(1);
+        this.response.appendVL64(1);
+        this.response.appendVL64(3);
+        this.response.appendVL64(0);
+        this.response.appendVL64(2);
+        this.response.appendVL64(1);
+        this.response.appendVL64(4);
+        this.response.appendVL64(1);
+        this.response.appendVL64(5);
+        this.response.appendRawString("dd-MM-yyyy");
         this.response.appendCut();
         return this.response;
     }

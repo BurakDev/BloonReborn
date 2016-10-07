@@ -1,11 +1,9 @@
 import MessageHandler from '../MessageHandler';
 import Emulator from '../../../Emulator';
-import SessionParametersComposer from '../../Outgoing/Handshake/SessionParametersComposer';
-import InitCryptoComposer from '../../Outgoing/Handshake/InitCryptoComposer';
+import CryptoParametersComposer from '../../Outgoing/Handshake/CryptoParametersComposer';
 
 export default class InitCryptoEvent extends MessageHandler {
     public handle(): void {
-        this.client.sendResponse(new SessionParametersComposer());
-        this.client.sendResponse(new InitCryptoComposer());
+        this.client.sendResponse(new CryptoParametersComposer());
     }
 }

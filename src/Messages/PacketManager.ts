@@ -4,8 +4,11 @@ import ClientMessage from './ClientMessage';
 import GameClient from '../Networking/GameClient';
 import Incoming from './Incoming/Incoming';
 import Outgoing from './Outgoing/Outgoing';
-import InitCryptoEvent from './Incoming/Handshake/InitCryptoEvent';
 import B64 from '../Protocol/B64';
+
+import InitCryptoEvent from './Incoming/Handshake/InitCryptoEvent';
+import GenerateSecretKeyEvent from './Incoming/Handshake/GenerateSecretKeyEvent';
+import LoginEvent from './Incoming/Handshake/LoginEvent';
 
 export default class PacketManager {
     private incoming: Array<any>;
@@ -61,5 +64,7 @@ export default class PacketManager {
 
     public registerHandshake(): void {
         this.registerHandler(Incoming.InitCryptoEvent, InitCryptoEvent);
+        this.registerHandler(Incoming.GenerateSecretKeyEvent, GenerateSecretKeyEvent);
+        this.registerHandler(Incoming.LoginEvent, LoginEvent);
     }
 }
