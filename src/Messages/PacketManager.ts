@@ -9,6 +9,8 @@ import B64 from '../Protocol/B64';
 import InitCryptoEvent from './Incoming/Handshake/InitCryptoEvent';
 import GenerateSecretKeyEvent from './Incoming/Handshake/GenerateSecretKeyEvent';
 import LoginEvent from './Incoming/Handshake/LoginEvent';
+import GetUserInfoEvent from './Incoming/Handshake/GetUserInfoEvent';
+import GetUserCreditsEvent from './Incoming/Handshake/GetUserCreditsEvent';
 
 export default class PacketManager {
     private incoming: Array<any>;
@@ -66,5 +68,7 @@ export default class PacketManager {
         this.registerHandler(Incoming.InitCryptoEvent, InitCryptoEvent);
         this.registerHandler(Incoming.GenerateSecretKeyEvent, GenerateSecretKeyEvent);
         this.registerHandler(Incoming.LoginEvent, LoginEvent);
+        this.registerHandler(Incoming.GetUserInfoEvent, GetUserInfoEvent);
+        this.registerHandler(Incoming.GetUserCreditsEvent, GetUserCreditsEvent);
     }
 }

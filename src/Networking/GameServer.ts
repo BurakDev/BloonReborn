@@ -32,6 +32,8 @@ export default class GameServer {
         c.sendResponse = x.sendResponse;
         c.sendResponses = x.sendResponses;
         c.dispose = x.dispose;
+        c.getHabbo = x.getHabbo;
+        c.setHabbo = x.setHabbo;
 
         c.write(new Buffer('@@' + String.fromCharCode(1), 'utf8'));
 

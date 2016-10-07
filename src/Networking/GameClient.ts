@@ -3,8 +3,11 @@ import ServerMessage from '../Messages/ServerMessage';
 import MessageComposer from '../Messages/Outgoing/MessageComposer';
 import Emulator from '../Emulator';
 import Logging from '../Core/Logging';
+import Habbo from '../HabboHotel/Habbo/Habbo';
 
 export default class GameClient extends net.Socket {
+    private habbo: Habbo;
+
     public constructor() {
         super();
     }
@@ -29,5 +32,13 @@ export default class GameClient extends net.Socket {
 
     public dispose(): void {
 
+    }
+
+    public getHabbo(): Habbo {
+        return this.habbo;
+    }
+
+    public setHabbo(habbo: Habbo): void {
+        this.habbo = habbo;
     }
 }
