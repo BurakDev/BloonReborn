@@ -6,5 +6,10 @@
     "mysql": "^2.11.1",
     "pathfinding": "^0.4.18",
     "typescript-collections": "^1.1.2"
-  }
+  },
+  "repository": {
+  	"type": "git",
+  	"url": "https://github.com/BurakDev/BloonReborn.git"
+  },
+  "license": "MIT"
 }
