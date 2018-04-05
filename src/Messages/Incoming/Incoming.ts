@@ -9,5 +9,5 @@ export default class Incoming {
     public static GetFurniRecyclerConfigurationEvent = 222;
     public static GetFurniRecyclerStatusEvent = 223;
     public static FriendListInitEvent = 12;
-    public static GetUserSubscription = 26;
+    public static GetUserSubscriptionEvent = 26;
 }

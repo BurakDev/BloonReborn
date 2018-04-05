@@ -11,10 +11,14 @@ import GenerateSecretKeyEvent from './Incoming/Handshake/GenerateSecretKeyEvent'
 import LoginEvent from './Incoming/Handshake/LoginEvent';
 import GetUserInfoEvent from './Incoming/Handshake/GetUserInfoEvent';
 import GetUserCreditsEvent from './Incoming/Handshake/GetUserCreditsEvent';
+import GetUserBadgesEvent from './Incoming/Handshake/GetUserBadgesEvent';
+import GetUserSubscriptionEvent from './Incoming/Handshake/GetUserSubscriptionEvent';
+import FriendListInitEvent from './Incoming/Console/FriendListInitEvent';
 
 export default class PacketManager {
     private incoming: Array<any>;
     private outgoingNames: Array<string>;
+    private incomingReflect: Array<string>;
 
     public constructor() {
         this.incoming = new Array<any>();
@@ -27,7 +31,12 @@ export default class PacketManager {
             this.outgoingNames[value] = key;
         }
 
+        this.incomingReflect = Object.getOwnPropertyNames(Incoming);
+        for(let j = 0; j < 5; j++)
+            this.incomingReflect.shift();
+
         this.registerHandshake();
+        this.registerConsole();
     }
 
     public getOutgoingName(header: number): string {
@@ -49,7 +58,16 @@ export default class PacketManager {
 
                 handler.handle();
             } else {
-                Emulator.getLogging().logPacketLine("[" + Logging.ANSI_CYAN + "CLIENT" + Logging.ANSI_RESET + "][" + Logging.ANSI_RED + "UNDEFINED" + Logging.ANSI_RESET + "][" + packet.getHeader() + "/" + B64.encode(packet.getHeader()) + "] => " + packet.getMessageBody());
+                let found: boolean = false;
+
+                for(let i = 0; i < this.incomingReflect.length; i++) {
+                    if (packet.getHeader() == Incoming[this.incomingReflect[i]]) {
+                        Emulator.getLogging().logPacketLine("[" + Logging.ANSI_CYAN + "CLIENT" + Logging.ANSI_RESET + "][" + Logging.ANSI_RED + "NOT IMPLEMENTED" + Logging.ANSI_RESET + "][" + this.incomingReflect[i] + "][" + packet.getHeader() + "/" + B64.encode(packet.getHeader()) + "] => " + packet.getMessageBody());
+                        found = true;
+                    }
+                }
+                if (!found)
+                    Emulator.getLogging().logPacketLine("[" + Logging.ANSI_CYAN + "CLIENT" + Logging.ANSI_RESET + "][" + Logging.ANSI_RED + "UNDEFINED" + Logging.ANSI_RESET + "][" + packet.getHeader() + "/" + B64.encode(packet.getHeader()) + "] => " + packet.getMessageBody());
             }
         } catch (e) {
             console.error(e);
@@ -70,5 +88,11 @@ export default class PacketManager {
         this.registerHandler(Incoming.LoginEvent, LoginEvent);
         this.registerHandler(Incoming.GetUserInfoEvent, GetUserInfoEvent);
         this.registerHandler(Incoming.GetUserCreditsEvent, GetUserCreditsEvent);
+        this.registerHandler(Incoming.GetUserBadgesEvent, GetUserBadgesEvent);
+        this.registerHandler(Incoming.GetUserSubscriptionEvent, GetUserSubscriptionEvent)
+    }
+
+    public registerConsole(): void {
+        this.registerHandler(Incoming.FriendListInitEvent, FriendListInitEvent);
     }
 }

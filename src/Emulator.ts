@@ -16,8 +16,8 @@ export default class Emulator {
     private static gameEnvironment: GameEnvironment;
 
     public static main(): void {
-        Emulator.configurationManager = new ConfigurationManager('../config.ini');
         Emulator.logging = new Logging();
+        Emulator.configurationManager = new ConfigurationManager('../config.ini');
         Emulator.database = new Database(Emulator.getConfigurationManager());
         Emulator.gameEnvironment = new GameEnvironment();
         Emulator.gameEnvironment.load();

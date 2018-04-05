@@ -9,4 +9,6 @@ export default class Outgoing {
     public static PingComposer = 50;
     public static UserInfoComposer = 5;
     public static UserCreditsComposer = 6;
+    public static UserBadgesComposer = 229;
+    public static UserSubscriptionComposer = 7;
 }

@@ -68,6 +68,10 @@ export default class Habbo {
         return this.credits;
     }
 
+    public getConsoleMission(): string {
+        return this.consoleMission;
+    }
+
     public setGameClient(gameClient: GameClient): void {
         this.gameClient = gameClient;
     }
