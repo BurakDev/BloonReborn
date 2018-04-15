@@ -51,7 +51,7 @@ export default class PacketManager {
             if (this.isRegistered(packet.getHeader())) {
                 let handler = new this.incoming[packet.getHeader()]();
 
-                Emulator.getLogging().logPacketLine("[" + Logging.ANSI_CYAN + "CLIENT" + Logging.ANSI_RESET + "][" + handler.constructor.name + "] => " + packet.getMessageBody());
+                Emulator.getLogging().logPacketLine("[" + Logging.ANSI_CYAN + "CLIENT" + Logging.ANSI_RESET + "][" + handler.constructor.name + "][" + packet.getHeader() + "/" + B64.encode(packet.getHeader()) + "] => " + packet.getMessageBody());
 
                 handler.client = client;
                 handler.packet = packet;
